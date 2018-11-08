@@ -1,3 +1,4 @@
+import java.awt.Button;
 import java.awt.EventQueue;
 import java.awt.FileDialog;
 import java.awt.Font;
@@ -6,13 +7,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.nio.file.Paths;
+
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import java.awt.Button;
+import javax.swing.SwingUtilities;
 
 public class gui {
 
@@ -65,17 +67,17 @@ public class gui {
 		
 		textField = new JTextField();
 		textField.setFont(new Font("Verdana", Font.PLAIN, 12));
-		textField.setBounds(33, 82, 311, 20);
+		textField.setBounds(33, 82, 456, 20);
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
 		
 		JButton button_path = new JButton("...");
-		button_path.setBounds(347, 82, 25, 20);
+		button_path.setBounds(499, 83, 25, 20);
 		frame.getContentPane().add(button_path);
 		
 		Button btn_next = new Button("Next");
 		btn_next.setFont(new Font("Verdana", Font.PLAIN, 12));
-		btn_next.setBounds(148, 133, 70, 22);
+		btn_next.setBounds(232, 119, 70, 22);
 		frame.getContentPane().add(btn_next);
 		
 		Button btn_exit = new Button("Exit");
@@ -91,7 +93,6 @@ public class gui {
 		    	    dialog.setMode(FileDialog.LOAD);
 		    	    dialog.setVisible(true);
 		    	    String file = new File(dialog.getFile()).getAbsolutePath();
-		    	    System.out.println(file);
 		    	    if(file!=null) {
 		    	    	InputFile = file;
 		    	    }
@@ -110,7 +111,15 @@ public class gui {
 		btn_next.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
-		    	new file_reader(InputFile);
+		    	file_reader fr =new file_reader(InputFile);
+				if(!fr.retrieve()) {
+					String st = "Error on file reader";
+					JOptionPane.showMessageDialog(null, st);
+				}
+				else {
+					frame.setContentPane(new InputWordPane(frame));
+					SwingUtilities.updateComponentTreeUI(frame);
+				}
 		    }
 		});
 		

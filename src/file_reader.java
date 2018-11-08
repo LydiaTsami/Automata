@@ -4,28 +4,30 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 public class file_reader {
 	ArrayList<String> words;
 	ArrayList<state> states;
+	String path;
 	
 	public file_reader(String path) {
 		words = new ArrayList<String>();
 		states = new ArrayList<state>();
 		words.add("@");
-		retrieve(path);
+		this.path = path;
 	}
 	
-	public void retrieve(String path) {
+	public boolean retrieve() {
 		FileReader fileReader;
 		try {
 			fileReader = new FileReader(path);
 			BufferedReader bf = new BufferedReader(fileReader);
-			int noStates = Integer.valueOf(bf.readLine());//1st line
-			int start = Integer.valueOf(bf.readLine());//2nd line
-			int noEndStates = Integer.valueOf(bf.readLine());//3rd line
+			int noStates = Integer.valueOf(bf.readLine());//1st line (no of states)
+			int start = Integer.valueOf(bf.readLine());//2nd line (start state)
+			int noEndStates = Integer.valueOf(bf.readLine());//3rd line (no of end states)
 			String temp = bf.readLine();//4th line
-			String end[] = temp.split(" ");
-			int noTransitions = Integer.valueOf(bf.readLine()); //5th line
+			String end[] = temp.split(" ");// end states
 			
 			for(int i=0;i<noStates;i++) {
 				boolean isstart=false;
@@ -36,7 +38,7 @@ public class file_reader {
 					if(i==(Integer.valueOf(end[j])-1))
 						isend=true;
 				}
-				state s = new state(Integer.toString(i),isstart,isend);
+				state s = new state(Integer.toString(i+1),isstart,isend);
 				states.add(s);
 			}
 			
@@ -47,15 +49,32 @@ public class file_reader {
 				System.out.println(states.get(k).getName() + " , "+ states.get(k).getIsStartingState() + " , " + states.get(k).getIsFinishState());
 			}
 			
+			int noTransitions = Integer.valueOf(bf.readLine()); //5th line (no of transitions)
+			System.out.println(noTransitions);
+			for(int j=0;j<noTransitions;j++) {// rest of the lines
+				String tempTrans = bf.readLine();
+				String transition[] = tempTrans.split(" ");//0 is starting state, 1 is the symbol and 2 the final state of the transition
+				if(!words.contains(transition[1]))
+					words.add(transition[1]);
+				for(state state: states) {
+					if(state.getName().equals(transition[0])) {
+						state.setTransition(Integer.valueOf(transition[2]), transition[1]);
+					}		
+				}
+			}
+			return true;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
 	}
 
