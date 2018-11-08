@@ -27,8 +27,6 @@ public class file_reader {
 			String end[] = temp.split(" ");
 			int noTransitions = Integer.valueOf(bf.readLine()); //5th line
 			
-			
-			
 			for(int i=0;i<noStates;i++) {
 				boolean isstart=false;
 				boolean isend=false;
