@@ -18,20 +18,15 @@ public class state {
 	public void setTransition(int state,String transition) {
 		transitioningTo.add(state);
 		transitioning.add(transition);
-		System.out.println(this.getName() + ", " + transition + ", " +state);
 	}
 	
-	public int checkTransition(String transition) {
+	public ArrayList<Integer> checkTransition(String transition) {
+		ArrayList<Integer> indexes= new ArrayList<Integer>();
 		for(int i=0;i<transitioning.size();i++) {
 			if(transition.equals(transitioning.get(i)))
-				return i;
+				indexes.add(transitioningTo.get(i));
 		}
-		return -1;
-	}
-	
-	public void print() {
-		System.out.println(transitioning);
-		System.out.println(transitioningTo);
+		return indexes;
 	}
 	
 	public boolean getIsStartingState() {

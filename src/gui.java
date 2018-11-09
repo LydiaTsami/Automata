@@ -96,6 +96,7 @@ public class gui {
 		    	    if(file!=null) {
 		    	    	InputFile = file;
 		    	    }
+		    	    textField.setText(InputFile);
 		    }
 		});
 		
@@ -123,7 +124,7 @@ public class gui {
 		    }
 		});
 		
-		File checkfile = new File(InputFile);
+	    File checkfile = new File(InputFile);
 		if(checkfile.exists()) {
 			textField.setText(InputFile);
 			textField.setEditable(false);
