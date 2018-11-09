@@ -53,7 +53,6 @@ public class gui {
 	private void initialize() {
 		fc = new JFileChooser();
 		InputFile = Paths.get(".").toAbsolutePath().normalize().toString() + "\\" +  "input.txt";
-		System.out.println(InputFile);
 		
 		frame = new JFrame();
 		frame.setTitle("Automata- it1514");

@@ -17,11 +17,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.text.DefaultEditorKit;
+import javax.swing.JTextField;
 
 public class InputWordPane extends JPanel {
 
 	private String words="";
-	private int lastState = -1;
+	private int currstate=-1;
+	private int startingState;
+	private JTextField textFieldState;
+	private boolean emptyPressed = false;
 	/**
 	 * Create the panel.
 	 */
@@ -37,7 +41,7 @@ public class InputWordPane extends JPanel {
 					frame.dispose();
 			}
 		});
-		btnExit.setBounds(433, 222, 89, 23);
+		btnExit.setBounds(429, 231, 89, 23);
 		add(btnExit);
 		
 		JLabel lblPleaseTypeThe = new JLabel("Please type the word:");
@@ -53,62 +57,70 @@ public class InputWordPane extends JPanel {
 				window.getFrame().setVisible(true);
 			}
 		});
-		btn_previous.setBounds(21, 222, 89, 23);
+		btn_previous.setBounds(21, 231, 89, 23);
 		add(btn_previous);
 		
 		JTextPane textPane = new JTextPane();
 		JScrollPane jsp = new JScrollPane(textPane);
-		jsp.setBounds(21, 39, 499, 172);
+		jsp.setBounds(19, 29, 499, 160);
 		add(jsp);
 		
 		for(int i=0;i<fr.words.size();i++) {
 			words+= fr.words.get(i);
 		}
 		
+		for(state state: fr.getStates()) {
+			if(state.isStartingState)
+				startingState = Integer.parseInt(state.getName())-1;
+		}
+		currstate = startingState;
+		textFieldState = new JTextField();
+		textFieldState.setBounds(21, 200, 243, 20);
+		add(textFieldState);
+		textFieldState.setColumns(10);
+		textFieldState.setEditable(false);
+		textFieldState.setText("Current state is: " + (currstate+1));
+		
 		textPane.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 			    int key = e.getKeyCode();
-
-			    if (key == KeyEvent.VK_ENTER) {
-			    	int currstate=-1;
-			    	System.out.println("enter pressed");
-			    	String lines [] = textPane.getText().toString().split("\n");
-			    	System.out.println(lines[lines.length-1]);
-			    	if(lines[lines.length-1].matches("[" + words + "]+")) {
-			    		
-			    		if(lastState==-1) {
-		    				for(state state: fr.getStates()) {
-		    					if(state.isStartingState)
-		    						currstate = Integer.parseInt(state.getName())-1;
-		    				}
-		    			}
-		    			else
-		    				currstate=lastState;
-			    		for(int i=0;i<lines[lines.length-1].length();i++) {
-			    			fr.getStates().get(0).print();
-			    			System.out.println("Current state: " +currstate);
-			    			int index = fr.getStates().get(currstate).checkTransition(String.valueOf(lines[lines.length-1].charAt(i)));
-			    			if(index!=-1)
-			    				currstate = fr.getStates().get(currstate).transitioningTo.get(index)-1;
-			    			System.out.println("Next state " + currstate);
+			    String keypressed = String.valueOf(e.getKeyChar());
+			    System.out.println(keypressed);
+			    if(keypressed.matches("[" + words + "]+") || key == KeyEvent.VK_SHIFT) {
+			    		if(keypressed.equals("@")) {
+			    			emptyPressed=true;
+			    			textFieldState.setText("Current state is: -");
 			    		}
-			    		if(fr.getStates().get(currstate).isFinishState)
-			    			JOptionPane.showMessageDialog(frame, "This is a final state", "Error", JOptionPane.WARNING_MESSAGE);
-			    		else
-			    			JOptionPane.showMessageDialog(frame, "This is not a final state", "Error", JOptionPane.WARNING_MESSAGE);
-			    		int choice = JOptionPane.showConfirmDialog(frame, "Do you want to input another word?");
-			    		if(choice == 1) {
-			    			frame.dispose();
-							gui window = new gui();
-							window.getFrame().setVisible(true);
-			    		}
-			    	}
-			    	else {
-			    		String error = "Acceptable characters are: " + words;
-						JOptionPane.showMessageDialog(frame, error, "Error", JOptionPane.WARNING_MESSAGE);
-						e.consume();
-			    	}
+			    		if (!emptyPressed) {
+							int index = fr.getStates().get(currstate).checkTransition(keypressed);
+							if (index != -1) {
+								currstate = fr.getStates().get(currstate).transitioningTo.get(index) - 1;
+								textFieldState.setText("Current state is: " + (currstate + 1));
+							} 
+						}
+			    } 	
+			    else if (key == KeyEvent.VK_ENTER) {
+		    		if(fr.getStates().get(currstate).isFinishState)
+		    			JOptionPane.showMessageDialog(frame, "This is a final state", "Error", JOptionPane.WARNING_MESSAGE);
+		    		else
+		    			JOptionPane.showMessageDialog(frame, "This is not a final state", "Error", JOptionPane.WARNING_MESSAGE);
+		    		int choice = JOptionPane.showConfirmDialog(frame, "Do you want to input another word?");
+		    		if(choice == 1) {
+		    			frame.dispose();
+						gui window = new gui();
+						window.getFrame().setVisible(true);
+		    		}
+		    		else if(choice == 0) {
+		    			currstate = startingState;
+		    			textFieldState.setText("Current state is: " + (currstate+1));
+		    			emptyPressed = false;
+		    		}
 			    }
+			    else {
+		    		String error = "Acceptable characters are: " + words;
+					JOptionPane.showMessageDialog(frame, error, "Error", JOptionPane.WARNING_MESSAGE);
+					e.consume();
+		    	}
 			}
 		});
 		

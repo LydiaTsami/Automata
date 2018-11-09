@@ -42,15 +42,7 @@ public class file_reader {
 				states.add(s);
 			}
 			
-			System.out.println(noStates);
-			System.out.println(start);
-			System.out.println(noEndStates);
-			for(int k=0;k<states.size();k++) {
-				System.out.println(states.get(k).getName() + " , "+ states.get(k).getIsStartingState() + " , " + states.get(k).getIsFinishState());
-			}
-			
 			int noTransitions = Integer.valueOf(bf.readLine()); //5th line (no of transitions)
-			System.out.println(noTransitions);
 			for(int j=0;j<noTransitions;j++) {// rest of the lines
 				String tempTrans = bf.readLine();
 				String transition[] = tempTrans.split(" ");//0 is starting state, 1 is the symbol and 2 the final state of the transition
