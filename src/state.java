@@ -21,6 +21,19 @@ public class state {
 		System.out.println(this.getName() + ", " + transition + ", " +state);
 	}
 	
+	public int checkTransition(String transition) {
+		for(int i=0;i<transitioning.size();i++) {
+			if(transition.equals(transitioning.get(i)))
+				return i;
+		}
+		return -1;
+	}
+	
+	public void print() {
+		System.out.println(transitioning);
+		System.out.println(transitioningTo);
+	}
+	
 	public boolean getIsStartingState() {
 		return isStartingState;
 	}

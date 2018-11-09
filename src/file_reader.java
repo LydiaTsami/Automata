@@ -77,5 +77,9 @@ public class file_reader {
 			return false;
 		}
 	}
+	
+	public ArrayList<state> getStates() {
+		return states;
+	}
 
 }

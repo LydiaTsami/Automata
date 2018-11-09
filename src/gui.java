@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.JPanel;
 
 public class gui {
 
@@ -117,7 +118,7 @@ public class gui {
 					JOptionPane.showMessageDialog(null, st);
 				}
 				else {
-					frame.setContentPane(new InputWordPane(frame));
+					frame.setContentPane(new InputWordPane(frame,fr));
 					SwingUtilities.updateComponentTreeUI(frame);
 				}
 		    }
@@ -132,5 +133,9 @@ public class gui {
 			textField.setText("");
 			textField.setEditable(false);
 		}
+	}
+
+	public JFrame getFrame() {
+		return frame;
 	}
 }
