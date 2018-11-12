@@ -19,6 +19,10 @@ import javax.swing.SwingConstants;
 
 public class InputWordPane extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String words="";
 	private ArrayList<Integer> currstate= new ArrayList<Integer>();
 	private int startingState;
@@ -70,9 +74,9 @@ public class InputWordPane extends JPanel {
 		add(jsp);
 		
 		//gets the words from file reader class
-		for(int i=0;i<fr.words.size();i++) {
-			words+= fr.words.get(i);
-			alphabetText += fr.words.get(i) + " ";
+		for(int i=0;i<fr.getWords().size();i++) {
+			words+= fr.getWords().get(i);
+			alphabetText += fr.getWords().get(i) + " ";
 		}
 		lblAlphabet.setText(alphabetText);
 		
@@ -108,10 +112,10 @@ public class InputWordPane extends JPanel {
 			    			for(Integer curr: currstate) {
 			    				indexes.addAll(fr.getStates().get(curr-1).checkTransition(keypressed));
 			    			}
-			    			currstate.clear();
+			    			currstate.clear();//clears the current states list
 							for(Integer index: indexes) {
 								if (index != -1) {
-									currstate.add(index);
+									currstate.add(index);// adds the new idexes to the current states if it's not -1
 								} 
 							}
 							textFieldState.setText(print());
@@ -121,7 +125,7 @@ public class InputWordPane extends JPanel {
 			    //if the enter key is pressed
 			    else if (key == KeyEvent.VK_ENTER) {
 			    	boolean finish=false;
-			    	for(Integer st: currstate) {
+			    	for(Integer st: currstate) { //checks all the currents states to find if any of them is a finish state
 			    		if(fr.getStates().get(st-1).isFinishState)
 			    			finish = true;
 			    	}
@@ -144,7 +148,7 @@ public class InputWordPane extends JPanel {
 		    		}
 			    }
 			    else if(key == KeyEvent.VK_BACK_SPACE) {
-			    	textPane.setText(""+textPane.getText().substring(0, textPane.getText().length() - 1));
+			    	textPane.setText(""+textPane.getText().substring(0, textPane.getText().length()));
 			    }
 			    //if anything else is pressed
 			    else {

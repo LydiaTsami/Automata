@@ -9,20 +9,17 @@ import java.io.File;
 import java.nio.file.Paths;
 
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.JPanel;
 
 public class gui {
 
 	private JFrame frame;
 	private JTextField textField;
 	private String InputFile;
-	private JFileChooser fc;
 
 	/**
 	 * Launch the application.
@@ -51,7 +48,6 @@ public class gui {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		fc = new JFileChooser();
 		InputFile = Paths.get(".").toAbsolutePath().normalize().toString() + "\\" +  "input.txt";
 		
 		frame = new JFrame();

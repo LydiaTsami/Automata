@@ -4,12 +4,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
-
 public class file_reader {
-	ArrayList<String> words;
-	ArrayList<state> states;
-	String path;
+	private ArrayList<String> words;
+	private ArrayList<state> states;
+	private String path;
 	
 	public file_reader(String path) {
 		words = new ArrayList<String>();
@@ -25,7 +23,7 @@ public class file_reader {
 			BufferedReader bf = new BufferedReader(fileReader);
 			int noStates = Integer.valueOf(bf.readLine());//1st line (no of states)
 			int start = Integer.valueOf(bf.readLine());//2nd line (start state)
-			int noEndStates = Integer.valueOf(bf.readLine());//3rd line (no of end states)
+			bf.readLine();//3rd line (no of end states)
 			String temp = bf.readLine();//4th line
 			String end[] = temp.split(" ");// end states
 			
@@ -50,10 +48,11 @@ public class file_reader {
 					words.add(transition[1]);
 				for(state state: states) {
 					if(state.getName().equals(transition[0])) {
-						state.setTransition(Integer.valueOf(transition[2]), transition[1]);
+						state.setTransition(states.get(Integer.parseInt(transition[2])-1), transition[1]);
 					}		
 				}
 			}
+			bf.close();
 			return true;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -72,6 +71,10 @@ public class file_reader {
 	
 	public ArrayList<state> getStates() {
 		return states;
+	}
+	
+	public ArrayList<String> getWords() {
+		return words;
 	}
 
 }

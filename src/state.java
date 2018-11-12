@@ -2,11 +2,11 @@ import java.util.ArrayList;
 
 public class state {
 
-	boolean isStartingState;
-	boolean isFinishState;
+	boolean isStartingState; //if it is a starting state
+	boolean isFinishState; // if it is a finish state
 	String name;
-	ArrayList<Integer> transitioningTo = new ArrayList<Integer>();
-	ArrayList<String> transitioning = new ArrayList<String>();
+	ArrayList<state> transitioningState = new ArrayList<state>();//To which state it's transitioning
+	ArrayList<String> transitions = new ArrayList<String>(); // The transition
 	
 
 	public state(String name,boolean isStartingState,boolean isFinishState) {
@@ -15,16 +15,17 @@ public class state {
 		this.isFinishState = isFinishState;
 	}
 	
-	public void setTransition(int state,String transition) {
-		transitioningTo.add(state);
-		transitioning.add(transition);
+	//sets 
+	public void setTransition(state state,String transition) {
+		transitioningState.add(state);
+		transitions.add(transition);
 	}
 	
 	public ArrayList<Integer> checkTransition(String transition) {
 		ArrayList<Integer> indexes= new ArrayList<Integer>();
-		for(int i=0;i<transitioning.size();i++) {
-			if(transition.equals(transitioning.get(i)))
-				indexes.add(transitioningTo.get(i));
+		for(int i=0;i<transitions.size();i++) {
+			if(transition.equals(transitions.get(i)))
+				indexes.add(Integer.parseInt(transitioningState.get(i).getName()));
 		}
 		return indexes;
 	}
