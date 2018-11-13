@@ -25,6 +25,7 @@ public class InputWordPane extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private String words="";
 	private ArrayList<Integer> currstate= new ArrayList<Integer>();
+	private ArrayList<ArrayList<Integer>> prevstate= new ArrayList<ArrayList<Integer>>();
 	private int startingState;
 	private JTextField textFieldState;
 	private boolean emptyPressed = false;
@@ -109,13 +110,15 @@ public class InputWordPane extends JPanel {
 			    		}
 			    		if (!emptyPressed) {
 			    			//gets the index of the state we are transiotioning to
+		    				prevstate.add(new ArrayList<Integer>());
 			    			for(Integer curr: currstate) {
 			    				indexes.addAll(fr.getStates().get(curr-1).checkTransition(keypressed));
+			    				prevstate.get(prevstate.size()-1).add(curr);//hard copy of currstate ArrayList
 			    			}
 			    			currstate.clear();//clears the current states list
 							for(Integer index: indexes) {
 								if (index != -1) {
-									currstate.add(index);// adds the new idexes to the current states if it's not -1
+									currstate.add(index);// adds the new indexes to the current states if it's not -1
 								} 
 							}
 							textFieldState.setText(print());
@@ -133,7 +136,7 @@ public class InputWordPane extends JPanel {
 		    			JOptionPane.showMessageDialog(frame, "This is a final state");
 		    		else
 		    			JOptionPane.showMessageDialog(frame, "This is not a final state");
-		    		int choice = JOptionPane.showConfirmDialog(frame, "Do you want to input another word?");
+		    		int choice = JOptionPane.showConfirmDialog(frame, "Do you want to input another word?","Message",JOptionPane.YES_NO_OPTION);
 		    		if(choice == 1) {
 		    			frame.dispose();
 						gui window = new gui();
@@ -149,7 +152,13 @@ public class InputWordPane extends JPanel {
 			    }
 			    else if(key == KeyEvent.VK_BACK_SPACE) {
 			    	textPane.setText(""+textPane.getText().substring(0, textPane.getText().length()));
-			    }
+			    	if(!prevstate.isEmpty()) {
+			    		currstate.clear();
+				    	currstate.addAll(prevstate.get(prevstate.size()-1));
+				    	prevstate.remove(prevstate.size()-1);
+			    	}
+			    	textFieldState.setText(print());
+			    	}
 			    //if anything else is pressed
 			    else {
 		    		String error = "Acceptable characters are: " + words;

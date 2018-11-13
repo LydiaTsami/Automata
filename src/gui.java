@@ -108,14 +108,22 @@ public class gui {
 		btn_next.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
-		    	file_reader fr =new file_reader(InputFile);
-				if(!fr.retrieve()) {
-					String st = "Error on file reader";
-					JOptionPane.showMessageDialog(null, st);
-				}
-				else {
-					frame.setContentPane(new InputWordPane(frame,fr));
-					SwingUtilities.updateComponentTreeUI(frame);
+		    	file_reader fr;
+				try {
+					fr = new file_reader(InputFile);
+					if(!fr.retrieve()) {
+						String st = "Error on file reader";
+						JOptionPane.showMessageDialog(null, st,"Error", JOptionPane.ERROR_MESSAGE);
+					}
+					else {
+						frame.setContentPane(new InputWordPane(frame,fr));
+						SwingUtilities.updateComponentTreeUI(frame);
+					}
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+					String error = "Please select an existing path for the .txt";
+					JOptionPane.showMessageDialog(frame, error, "Warning", JOptionPane.WARNING_MESSAGE);
 				}
 		    }
 		});
@@ -126,6 +134,7 @@ public class gui {
 			textField.setEditable(false);
 		}
 		else {
+			InputFile = null;
 			textField.setText("");
 			textField.setEditable(false);
 		}
