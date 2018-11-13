@@ -24,9 +24,9 @@ public class InputWordPane extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private String words="";
-	private ArrayList<Integer> currstate= new ArrayList<Integer>();
-	private ArrayList<ArrayList<Integer>> prevstate= new ArrayList<ArrayList<Integer>>();
-	private int startingState;
+	private ArrayList<Integer> currstate= new ArrayList<Integer>();// current state
+	private ArrayList<ArrayList<Integer>> prevstates= new ArrayList<ArrayList<Integer>>();// previous states
+	private int startingState; //starting state
 	private JTextField textFieldState;
 	private boolean emptyPressed = false;
 	private Set<Integer> indexes = new LinkedHashSet<Integer>();
@@ -90,7 +90,8 @@ public class InputWordPane extends JPanel {
 		
 		currstate.add(startingState);
 		textFieldState = new JTextField();
-		textFieldState.setBounds(21, 200, 243, 20);
+		textFieldState.setHorizontalAlignment(SwingConstants.CENTER);
+		textFieldState.setBounds(21, 200, 497, 20);
 		add(textFieldState);
 		textFieldState.setColumns(10);
 		textFieldState.setEditable(false);
@@ -110,10 +111,10 @@ public class InputWordPane extends JPanel {
 			    		}
 			    		if (!emptyPressed) {
 			    			//gets the index of the state we are transiotioning to
-		    				prevstate.add(new ArrayList<Integer>());
+		    				prevstates.add(new ArrayList<Integer>());
 			    			for(Integer curr: currstate) {
 			    				indexes.addAll(fr.getStates().get(curr-1).checkTransition(keypressed));
-			    				prevstate.get(prevstate.size()-1).add(curr);//hard copy of currstate ArrayList
+			    				prevstates.get(prevstates.size()-1).add(curr);//hard copy of currstate ArrayList
 			    			}
 			    			currstate.clear();//clears the current states list
 							for(Integer index: indexes) {
@@ -152,10 +153,10 @@ public class InputWordPane extends JPanel {
 			    }
 			    else if(key == KeyEvent.VK_BACK_SPACE) {
 			    	textPane.setText(""+textPane.getText().substring(0, textPane.getText().length()));
-			    	if(!prevstate.isEmpty()) {
+			    	if(!prevstates.isEmpty()) {
 			    		currstate.clear();
-				    	currstate.addAll(prevstate.get(prevstate.size()-1));
-				    	prevstate.remove(prevstate.size()-1);
+				    	currstate.addAll(prevstates.get(prevstates.size()-1));
+				    	prevstates.remove(prevstates.size()-1);
 			    	}
 			    	textFieldState.setText(print());
 			    	}
