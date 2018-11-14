@@ -52,7 +52,7 @@ public class gui {
 		
 		frame = new JFrame();
 		frame.setTitle("Automata- it1514");
-		frame.setBounds(100, 100, 550, 300);
+		frame.setBounds(100, 100, 550, 310);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		

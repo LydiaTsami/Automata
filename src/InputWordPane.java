@@ -34,7 +34,7 @@ public class InputWordPane extends JPanel {
 	
 	public InputWordPane(JFrame frame,file_reader fr) {
 		setLayout(null);
-		setBounds(100, 100, 550, 300);
+		setBounds(100, 100, 550, 310);
 		
 		JButton btnExit = new JButton("Exit");
 		btnExit.addActionListener(new ActionListener() {
