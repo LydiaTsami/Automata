@@ -15,7 +15,7 @@ public class state {
 		this.isFinishState = isFinishState;
 	}
 	
-	//sets 
+	//sets the character of the transition and the state it is transitioning to
 	public void setTransition(state state,String transition) {
 		transitioningState.add(state);
 		transitions.add(transition);

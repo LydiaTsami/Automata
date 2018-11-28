@@ -81,10 +81,10 @@ public class gui {
 		btn_exit.setBounds(454, 229, 70, 22);
 		frame.getContentPane().add(btn_exit);
 		
+		//open file dialog
 		button_path.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
-		    	
 		    	 FileDialog dialog = new FileDialog((Frame)null, "Select File to Open");
 		    	    dialog.setMode(FileDialog.LOAD);
 		    	    dialog.setVisible(true);
@@ -108,6 +108,7 @@ public class gui {
 		btn_next.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
+		    	//trying to read file by calling the file_reader class
 		    	file_reader fr;
 				try {
 					fr = new file_reader(InputFile);
@@ -120,14 +121,14 @@ public class gui {
 						SwingUtilities.updateComponentTreeUI(frame);
 					}
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-//					e1.printStackTrace();
+					e1.printStackTrace();
 					String error = "Please select an existing path for the .txt";
 					JOptionPane.showMessageDialog(frame, error, "Warning", JOptionPane.WARNING_MESSAGE);
 				}
 		    }
 		});
 		
+		//updates textField with the new input path
 	    File checkfile = new File(InputFile);
 		if(checkfile.exists()) {
 			textField.setText(InputFile);

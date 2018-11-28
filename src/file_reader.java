@@ -44,8 +44,11 @@ public class file_reader {
 			for(int j=0;j<noTransitions;j++) {// rest of the lines
 				String tempTrans = bf.readLine();
 				String transition[] = tempTrans.split(" ");//0 is starting state, 1 is the symbol and 2 the final state of the transition
+				
+				//if words does not contain the character, it is added to the arraylist
 				if(!words.contains(transition[1]))
 					words.add(transition[1]);
+				
 				for(state state: states) {
 					if(state.getName().equals(transition[0])) {
 						state.setTransition(states.get(Integer.parseInt(transition[2])-1), transition[1]);
